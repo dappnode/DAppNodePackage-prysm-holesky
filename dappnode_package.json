@@ -1,6 +1,6 @@
 {
   "name": "prysm-holesky.dnp.dappnode.eth",
-  "version": "1.0.26",
+  "version": "1.0.0",
   "upstreamVersion": "v4.1.0",
   "upstreamRepo": "prysmaticlabs/prysm",
   "upstreamArg": "UPSTREAM_VERSION",

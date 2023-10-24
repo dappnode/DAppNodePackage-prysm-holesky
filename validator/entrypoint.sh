@@ -9,28 +9,10 @@ export WALLET_DIR="/root/.eth2validators"
 mkdir -p ${WALLET_DIR}
 cp /auth-token ${WALLET_DIR}/auth-token
 
-# Migrate if required
-if [[ $(validator accounts list \
-  --wallet-dir="$WALLET_DIR" \
-  --wallet-password-file="${WALLET_DIR}/walletpassword.txt" \
-  --holesky \
-  --accept-terms-of-use) ]]; then
-  {
-    echo "found validators, starging migration"
-    eth2-migrate.sh &
-    wait $!
-  }
-else
-  { echo "validators not found, no migration needed"; }
-fi
-
-# Remove manual migration if older than 20 days
-find /root -type d -name manual_migration -mtime +20 -exec rm -rf {} +
-
 # MEVBOOST: https://hackmd.io/@prysmaticlabs/BJeinxFsq
 if [ -n "$_DAPPNODE_GLOBAL_MEVBOOST_HOLESKY" ] && [ "$_DAPPNODE_GLOBAL_MEVBOOST_HOLESKY" == "true" ]; then
   echo "MEVBOOST is enabled"
-  MEVBOOST_URL="http://mev-boost.mev-boost-goerli.dappnode:18550"
+  MEVBOOST_URL="http://mev-boost.mev-boost-holesky.dappnode:18550"
   if curl --retry 5 --retry-delay 5 --retry-all-errors "${MEVBOOST_URL}"; then
     EXTRA_OPTS="--enable-builder ${EXTRA_OPTS}"
   else
@@ -40,7 +22,7 @@ if [ -n "$_DAPPNODE_GLOBAL_MEVBOOST_HOLESKY" ] && [ "$_DAPPNODE_GLOBAL_MEVBOOST_
 fi
 
 oLang=$LANG oLcAll=$LC_ALL
-LANG=C LC_ALL=C 
+LANG=C LC_ALL=C
 graffitiString=${GRAFFITI:0:32}
 LANG=$oLang LC_ALL=$oLcAll
 

@@ -7,17 +7,17 @@ else
 fi
 
 case $_DAPPNODE_GLOBAL_EXECUTION_CLIENT_HOLESKY in
-"goerli-geth.dnp.dappnode.eth")
-  HTTP_ENGINE="http://goerli-geth.dappnode:8551"
+"holesky-geth.dnp.dappnode.eth")
+  HTTP_ENGINE="http://holesky-geth.dappnode:8551"
   ;;
-"goerli-nethermind.dnp.dappnode.eth")
-  HTTP_ENGINE="http://goerli-nethermind.dappnode:8551"
+"holesky-nethermind.dnp.dappnode.eth")
+  HTTP_ENGINE="http://holesky-nethermind.dappnode:8551"
   ;;
-"goerli-besu.dnp.dappnode.eth")
-  HTTP_ENGINE="http://goerli-besu.dappnode:8551"
+"holesky-besu.dnp.dappnode.eth")
+  HTTP_ENGINE="http://holesky-besu.dappnode:8551"
   ;;
-"goerli-erigon.dnp.dappnode.eth")
-  HTTP_ENGINE="http://goerli-erigon.dappnode:8551"
+"holesky-erigon.dnp.dappnode.eth")
+  HTTP_ENGINE="http://holesky-erigon.dappnode:8551"
   ;;
 *)
   echo "Unknown value for _DAPPNODE_GLOBAL_EXECUTION_CLIENT_HOLESKY: $_DAPPNODE_GLOBAL_EXECUTION_CLIENT_HOLESKY"
@@ -28,7 +28,7 @@ esac
 # MEVBOOST: https://hackmd.io/@prysmaticlabs/BJeinxFsq
 if [ -n "$_DAPPNODE_GLOBAL_MEVBOOST_HOLESKY" ] && [ "$_DAPPNODE_GLOBAL_MEVBOOST_HOLESKY" == "true" ]; then
   echo "MEVBOOST is enabled"
-  MEVBOOST_URL="http://mev-boost.mev-boost-goerli.dappnode:18550"
+  MEVBOOST_URL="http://mev-boost.mev-boost-holesky.dappnode:18550"
   if curl --retry 5 --retry-delay 5 --retry-all-errors "${MEVBOOST_URL}"; then
     EXTRA_OPTS="--http-mev-relay=${MEVBOOST_URL} ${EXTRA_OPTS}"
   else
@@ -39,10 +39,10 @@ fi
 
 # Chek the env FEE_RECIPIENT_ADDRESS has a valid ethereum address if not set to the null address
 if [ -n "$FEE_RECIPIENT_ADDRESS" ] && [[ "$FEE_RECIPIENT_ADDRESS" =~ ^0x[a-fA-F0-9]{40}$ ]]; then
-    echo "FEE_RECIPIENT is valid"
+  echo "FEE_RECIPIENT is valid"
 else
-    echo "FEE_RECIPIENT is not a valid ethereum address, setting it to the null address"
-    FEE_RECIPIENT_ADDRESS="0x0000000000000000000000000000000000000000"
+  echo "FEE_RECIPIENT is not a valid ethereum address, setting it to the null address"
+  FEE_RECIPIENT_ADDRESS="0x0000000000000000000000000000000000000000"
 fi
 
 # If EXTRA_OPTS does not include flag --suggested-fee-recipient, append it
