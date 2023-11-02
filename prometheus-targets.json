@@ -1,16 +1,16 @@
 [
   {
     "labels": {
-      "package": "prysm-prater.dnp.dappnode.eth",
-      "service": "beacon-chain.prysm-prater.dappnode"
+      "package": "prysm-holesky.dnp.dappnode.eth",
+      "service": "beacon-chain.prysm-holesky.dappnode"
     },
-    "targets": ["beacon-chain.prysm-prater.dappnode:8080"]
+    "targets": ["beacon-chain.prysm-holesky.dappnode:8080"]
   },
   {
     "labels": {
-      "package": "prysm-prater.dnp.dappnode.eth",
-      "service": "validator.prysm-prater.dappnode"
+      "package": "prysm-holesky.dnp.dappnode.eth",
+      "service": "validator.prysm-holesky.dappnode"
     },
-    "targets": ["validator.prysm-prater.dappnode:8081"]
+    "targets": ["validator.prysm-holesky.dappnode:8081"]
   }
 ]
