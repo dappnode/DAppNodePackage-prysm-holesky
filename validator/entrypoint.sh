@@ -9,18 +9,6 @@ export WALLET_DIR="/root/.eth2validators"
 mkdir -p ${WALLET_DIR}
 cp /auth-token ${WALLET_DIR}/auth-token
 
-# MEVBOOST: https://hackmd.io/@prysmaticlabs/BJeinxFsq
-if [ -n "$_DAPPNODE_GLOBAL_MEVBOOST_HOLESKY" ] && [ "$_DAPPNODE_GLOBAL_MEVBOOST_HOLESKY" == "true" ]; then
-  echo "MEVBOOST is enabled"
-  MEVBOOST_URL="http://mev-boost.mev-boost-holesky.dappnode:18550"
-  if curl --retry 5 --retry-delay 5 --retry-all-errors "${MEVBOOST_URL}"; then
-    EXTRA_OPTS="--enable-builder ${EXTRA_OPTS}"
-  else
-    echo "MEVBOOST is enabled but ${MEVBOOST_URL} is not reachable"
-    curl -X POST -G 'http://my.dappnode/notification-send' --data-urlencode 'type=danger' --data-urlencode title="${MEVBOOST_URL} is not available" --data-urlencode 'body=Make sure the mevboost is available and running'
-  fi
-fi
-
 oLang=$LANG oLcAll=$LC_ALL
 LANG=C LC_ALL=C
 graffitiString=${GRAFFITI:0:32}
