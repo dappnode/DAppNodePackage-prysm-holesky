@@ -32,7 +32,6 @@ COPY --from=prune /usr/src/app/slashing-prune /usr/local/bin
 #Copy binaries from build stage
 COPY --from=binary /usr/local/bin/validator /usr/local/bin
 COPY auth-token /auth-token
-COPY eth2-migrate.sh /usr/local/bin
 COPY entrypoint.sh /usr/local/bin
 
 RUN apt update && \
