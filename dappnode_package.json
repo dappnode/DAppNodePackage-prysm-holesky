@@ -29,7 +29,7 @@
     "url": "https://github.com/dappnode/DAppNodePackage-prysm-holesky/issues"
   },
   "requirements": {
-    "minimumDappnodeVersion": "0.2.58"
+    "minimumDappnodeVersion": "0.2.82"
   },
   "categories": ["Blockchain", "ETH2.0"],
   "links": {
@@ -44,12 +44,8 @@
   },
   "globalEnvs": [
     {
-      "envs": ["EXECUTION_CLIENT_HOLESKY", "MEVBOOST_HOLESKY"],
+      "envs": ["EXECUTION_CLIENT_HOLESKY"],
       "services": ["beacon-chain"]
-    },
-    {
-      "envs": ["MEVBOOST_HOLESKY"],
-      "services": ["validator"]
     }
   ]
 }
