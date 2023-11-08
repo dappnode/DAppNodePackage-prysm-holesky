@@ -1,6 +1,6 @@
 {
   "name": "prysm-holesky.dnp.dappnode.eth",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "upstreamVersion": "v4.1.1",
   "upstreamRepo": "prysmaticlabs/prysm",
   "upstreamArg": "UPSTREAM_VERSION",
@@ -29,7 +29,7 @@
     "url": "https://github.com/dappnode/DAppNodePackage-prysm-holesky/issues"
   },
   "requirements": {
-    "minimumDappnodeVersion": "0.2.82"
+    "minimumDappnodeVersion": "0.2.83"
   },
   "categories": ["Blockchain", "ETH2.0"],
   "links": {
