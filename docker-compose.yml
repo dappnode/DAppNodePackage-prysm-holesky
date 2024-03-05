@@ -4,7 +4,7 @@ services:
     build:
       context: beacon-chain
       args:
-        UPSTREAM_VERSION: v4.2.1
+        UPSTREAM_VERSION: v5.0.0
     volumes:
       - "beacon-chain-data:/data"
     ports:
@@ -18,13 +18,13 @@ services:
       P2P_UDP_PORT: 14503
       EXTRA_OPTS: ""
       FEE_RECIPIENT_ADDRESS: ""
-    image: "beacon-chain.prysm-holesky.dnp.dappnode.eth:1.0.0"
+    image: "beacon-chain.prysm-holesky.dnp.dappnode.eth:0.1.1"
   validator:
     build:
       context: validator
       dockerfile: Dockerfile
       args:
-        UPSTREAM_VERSION: v4.2.1
+        UPSTREAM_VERSION: v5.0.0
     volumes:
       - "validator-data:/root/"
     restart: unless-stopped
@@ -35,7 +35,7 @@ services:
       GRAFFITI: validating_from_DAppNode
       EXTRA_OPTS: ""
       FEE_RECIPIENT_ADDRESS: ""
-    image: "validator.prysm-holesky.dnp.dappnode.eth:1.0.0"
+    image: "validator.prysm-holesky.dnp.dappnode.eth:0.1.1"
 volumes:
   beacon-chain-data: {}
   validator-data: {}

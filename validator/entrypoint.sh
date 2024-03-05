@@ -1,9 +1,8 @@
-#!/bin/bash
+#!/bin/sh
 
-export NETWORK="holesky"
-VALIDATOR_PORT=3500
-export WEB3SIGNER_API="http://web3signer.web3signer-${NETWORK}.dappnode:9000"
-export WALLET_DIR="/root/.eth2validators"
+WEB3SIGNER_API=http://web3signer.web3signer-${NETWORK}.dappnode:9000
+DATA_DIR=/root/.eth2validators
+WALLET_DIR=${DATA_DIR}/prysm-wallet-v2
 
 # Copy auth-token in runtime to the prysm token dir
 mkdir -p ${WALLET_DIR}
@@ -11,11 +10,11 @@ cp /auth-token ${WALLET_DIR}/auth-token
 
 oLang=$LANG oLcAll=$LC_ALL
 LANG=C LC_ALL=C
-graffitiString=${GRAFFITI:0:32}
+graffitiString=$(echo ${GRAFFITI} | cut -c 1-32)
 LANG=$oLang LC_ALL=$oLcAll
 
-exec -c validator --holesky \
-  --datadir="$WALLET_DIR" \
+exec /validator --holesky \
+  --datadir="$DATA_DIR" \
   --wallet-dir="$WALLET_DIR" \
   --monitoring-host 0.0.0.0 \
   --beacon-rpc-provider="$BEACON_RPC_PROVIDER" \

@@ -1,21 +1,15 @@
-FROM alpine:3.18.4 as build
-
-ARG TARGETARCH
 ARG UPSTREAM_VERSION
-ENV DOWNLOAD_URL https://github.com/prysmaticlabs/prysm/releases/download
+FROM debian:bullseye-slim AS builder
 
-RUN apk update && apk add --no-cache wget ca-certificates && \
-    wget -q ${DOWNLOAD_URL}/${UPSTREAM_VERSION}/validator-${UPSTREAM_VERSION}-linux-${TARGETARCH:-amd64} -O /usr/local/bin/validator && \
-    chmod +x /usr/local/bin/validator
+ARG UPSTREAM_VERSION
+FROM gcr.io/prysmaticlabs/prysm/validator:${UPSTREAM_VERSION}
 
-FROM alpine:3.18.4 as prod
-
-COPY --from=build /usr/local/bin/validator /usr/local/bin/validator
 COPY auth-token /auth-token
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
-# Install gcompat for glibc compatibility
-RUN apk update && apk add --no-cache ca-certificates bash gcompat && \
-    chmod +x /usr/local/bin/entrypoint.sh
+COPY --from=builder /bin/sh /bin/sh
 
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+ENV NETWORK=holesky \
+    VALIDATOR_PORT=3500
+
+ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
