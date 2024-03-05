@@ -18,7 +18,7 @@ services:
       P2P_UDP_PORT: 14503
       EXTRA_OPTS: ""
       FEE_RECIPIENT_ADDRESS: ""
-    image: "beacon-chain.prysm-holesky.dnp.dappnode.eth:1.0.0"
+    image: "beacon-chain.prysm-holesky.dnp.dappnode.eth:0.1.1"
   validator:
     build:
       context: validator
@@ -35,7 +35,7 @@ services:
       GRAFFITI: validating_from_DAppNode
       EXTRA_OPTS: ""
       FEE_RECIPIENT_ADDRESS: ""
-    image: "validator.prysm-holesky.dnp.dappnode.eth:1.0.0"
+    image: "validator.prysm-holesky.dnp.dappnode.eth:0.1.1"
 volumes:
   beacon-chain-data: {}
   validator-data: {}

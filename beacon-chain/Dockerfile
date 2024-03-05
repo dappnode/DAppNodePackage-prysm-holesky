@@ -1,26 +1,35 @@
-FROM alpine:3.18.4 as build
-
-ARG TARGETARCH
 ARG UPSTREAM_VERSION
-ENV DOWNLOAD_URL https://github.com/prysmaticlabs/prysm/releases/download
+FROM debian:bullseye-slim AS builder
 
-RUN apk update && apk add --no-cache wget ca-certificates && \
-    echo ${DOWNLOAD_URL}/${UPSTREAM_VERSION}/beacon-chain-${UPSTREAM_VERSION}-linux-${TARGETARCH:-amd64} && \
-    wget -q ${DOWNLOAD_URL}/${UPSTREAM_VERSION}/beacon-chain-${UPSTREAM_VERSION}-linux-${TARGETARCH:-amd64} -O /usr/local/bin/beacon-chain && \
-    wget -q https://github.com/eth-clients/holesky/blob/main/custom_config_data/genesis.ssz -O /tmp/genesis.ssz && \
-    chmod +x /usr/local/bin/beacon-chain
+# Use ldd to copy dependencies of grep
+RUN mkdir /deps
+RUN ldd /bin/grep | tr -s '[:space:]' '\n' | grep '^/' | xargs -I {} cp -v {} /deps || true
 
-FROM alpine:3.18.4 as prod
+# Only mainnet genesis file is included by default
+# Downloaded from: https://github.com/eth-clients/holesky/raw/main/custom_config_data/genesis.ssz
+# genesis.ssz.zst size > 100MB, so it is split into 2 parts
+COPY genesis.ssz.zst.part_00 genesis.ssz.zst.part_01 /tmp/
 
-# Copy binaries and configs from build stage
-COPY --from=build /usr/local/bin/beacon-chain /usr/local/bin/beacon-chain
-COPY --from=build /tmp/genesis.ssz /genesis.ssz
+# Install zstd
+RUN apt-get update && apt-get install -y zstd
+
+RUN cat /tmp/genesis.ssz.zst.part_* > /genesis.ssz.zst && \
+    zstd -d /genesis.ssz.zst -o /genesis.ssz
+
+ARG UPSTREAM_VERSION
+FROM gcr.io/prysmaticlabs/prysm/beacon-chain:${UPSTREAM_VERSION}
 
 COPY jwtsecret.hex /jwtsecret
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
-# Install gcompat for glibc compatibility
-RUN apk add --no-cache ca-certificates bash gcompat && \
-    chmod +x /usr/local/bin/entrypoint.sh
+COPY --from=builder /genesis.ssz /genesis.ssz
 
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+COPY --from=builder /bin/sh /bin/sh
+COPY --from=builder /bin/grep /bin/grep
+COPY --from=builder /deps/* /lib/
+
+ENV GENESIS_FILE_PATH=/genesis.ssz \
+    JWT_PATH=/jwtsecret \
+    VALIDATOR_PORT=3500
+
+ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
