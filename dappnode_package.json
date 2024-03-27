@@ -1,7 +1,7 @@
 {
   "name": "prysm-holesky.dnp.dappnode.eth",
-  "version": "0.1.1",
-  "upstreamVersion": "v5.0.0",
+  "version": "0.1.3",
+  "upstreamVersion": "v5.0.2",
   "upstreamRepo": "prysmaticlabs/prysm",
   "upstreamArg": "UPSTREAM_VERSION",
   "shortDescription": "Prysm implementation for Holesky Beacon chain + validator",
