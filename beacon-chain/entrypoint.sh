@@ -25,6 +25,12 @@ case $_DAPPNODE_GLOBAL_EXECUTION_CLIENT_HOLESKY in
   ;;
 esac
 
+if [ -n "$_DAPPNODE_GLOBAL_MEVBOOST_HOLESKY" ] && [ "$_DAPPNODE_GLOBAL_MEVBOOST_HOLESKY" = "true" ]; then
+  echo "MEVBOOST is enabled"
+  MEVBOOST_URL="http://mev-boost.mev-boost-holesky.dappnode:18550"
+  EXTRA_OPTS="--http-mev-relay=${MEVBOOST_URL} ${EXTRA_OPTS}"
+fi
+
 if [ -n "$FEE_RECIPIENT_ADDRESS" ] && echo "$FEE_RECIPIENT_ADDRESS" | grep -Eq '^0x[a-fA-F0-9]{40}$'; then
   echo "FEE_RECIPIENT is valid"
 else
