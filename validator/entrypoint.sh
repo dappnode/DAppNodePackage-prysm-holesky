@@ -8,6 +8,11 @@ WALLET_DIR=${DATA_DIR}/prysm-wallet-v2
 mkdir -p ${WALLET_DIR}
 cp /auth-token ${WALLET_DIR}/auth-token
 
+if [ -n "$_DAPPNODE_GLOBAL_MEVBOOST_HOLESKY" ] && [ "$_DAPPNODE_GLOBAL_MEVBOOST_HOLESKY" = "true" ]; then
+    echo "MEVBOOST is enabled"
+    EXTRA_OPTS="--enable-builder ${EXTRA_OPTS}"
+fi
+
 oLang=$LANG oLcAll=$LC_ALL
 LANG=C LC_ALL=C
 graffitiString=$(echo ${GRAFFITI} | cut -c 1-32)
