@@ -13,7 +13,7 @@
     "serviceName": "beacon-chain",
     "portNumber": 3500
   },
-  "mainService": "validator",
+  "mainService": "beacon-chain",
   "author": "DAppNode Association <admin@dappnode.io> (https://github.com/dappnode)",
   "contributors": [
     "dappLion <dapplion@dappnode.io> (https://github.com/dapplion)",
